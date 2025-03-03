@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static', filename='logo.jpeg') }}" rel="icon" type="image/jpeg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexulen Breach Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styless.css') }}">
+</head>
+<body>
+
+    <!-- Loading Animation -->
+    <div id="loadingScreen">
+        <h1>🔍  Breach Detector</h1>
+        <div class="loading-bar"></div>
+    </div>
+
+    <!-- Main Interface -->
+    <div class="container hidden" id="mainContent">
+        <h1>🔍 AI-Powered Breach Detection</h1>
+        <p>Enter your email to check if it's been exposed in a data breach.</p>
+        
+        <form id="breachForm">
+            <input type="email" id="emailInput" name="email" placeholder="Enter your email..." required>
+            <button type="submit">Check Breach</button>
+        </form>
+
+        <!-- Loading Animation -->
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Scanning for breaches...</p>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Simulate Loading Screen
+        setTimeout(() => {
+            document.getElementById("loadingScreen").classList.add("hidden");
+            document.getElementById("mainContent").classList.remove("hidden");
+        }, 2000); // Show the main interface after 2 seconds
+
+        document.getElementById("breachForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("emailInput").value;
+            const resultDiv = document.getElementById("result");
+            const loadingDiv = document.getElementById("loading");
+
+            if (!email) {
+                alert("Please enter an email!");
+                return;
+            }
+
+            // Show loading animation
+            loadingDiv.classList.remove("hidden");
+            resultDiv.innerHTML = "";
+
+            fetch("/check", {
+                method: "POST",
+                body: new URLSearchParams({ "email": email }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading animation
+                loadingDiv.classList.add("hidden");
+
+                // Display result
+                resultDiv.innerHTML = `<p>${data.message}</p>`;
+                resultDiv.style.color = data.status === "breached" ? "red" : "green";
+                resultDiv.classList.add("fade-in");
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                loadingDiv.classList.add("hidden");
+            });
+        });
+    </script>
+
+</body>
+</html>

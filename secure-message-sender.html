@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="logo.jpeg" rel="icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Secure Message Sender</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div id="branding">
+                    <h1><span class="highlight">Hack</span> Masters</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#" id="auth-link">Login/Signup</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section id="main">
+            <div class="container">
+                <article id="main-col">
+                    <h1>Secure Message Sender</h1>
+                    <p>Send secure messages using encryption.</p>
+                    <textarea id="message-input" placeholder="Enter your message"></textarea>
+                    <button onclick="sendMessage()">Send</button>
+                    <div id="message-result"></div>
+                </article>
+            </div>
+        </section>
+
+        <footer>
+            <p>Hack Masters, Copyright &copy; 2024</p>
+        </footer>
+
+        <script>
+            function sendMessage() {
+                const message = document.getElementById('message-input').value;
+                document.getElementById('message-result').innerText = `Sending encrypted message: ${message} (This is a placeholder)`;
+            }
+        </script>
+    </body>
+    </html>

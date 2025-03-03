@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <link href="logo.jpeg" rel="icon">
+        <meta name="viewport" content="width=device-width, initial-scale: 1.0">
+        <title>Hack Masters</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div id="branding">
+                    <h1><span class="highlight">Hack</span> Masters</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li class="current"><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="nexulean.netlify.app">Services</a></li>
+                        <li><a href="#" id="auth-link">Login/Signup</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section id="main">
+            <div class="container">
+                <article id="main-col">
+                    <h2>Welcome to Hack Masters🚀🔐</h2>
+                    <p>We are a team of visionary cybersecurity experts and blockchain enthusiasts who have joined forces to form Hack Masters. Our mission is to revolutionize the way individuals and organizations protect themselves from cyber threats by harnessing the power of breach detection and blockchain technology.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png"
+                        alt="Bitcoin"
+                        style="width: 100px; margin: 20px auto; display: block; animation: rotate 5s linear infinite;">
+                </article>
+            </div>
+        </section>
+
+        
+        
+        
+
+        <section class="options" id="options-section">
+            <div class="container">
+                <h2>Services</h2>
+                <a href="http://127.0.0.1:5000/" id="data-breach-link">Data Breach Finder</a>
+                <a href="http://0.0.0.0:8000/index.html" id="secure-message-link">Secure Message Sender</a>
+                <img src="https://cdn4.iconfinder.com/data/icons/crypto-currency-and-coin-2/200/crypto_currency_color-28-512.png"
+                    alt="" style="width: 80px; margin: 10px; animation: pulse 2s linear infinite;">
+            </div>
+        </section>
+
+        
+        
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<section id="contact-form">
+    <div class="container">
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p><i class="fa-solid fa-envelope"></i> <strong></strong> stalin78830@gmail.com</p>
+            <p><i class="fa-solid fa-map-marker-alt"></i> <strong></strong> Remote</p>
+        </div>
+
+        <div class="form-wrapper">
+            <h2>Contact Us</h2>
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="e63367f9-8001-46ea-8ef3-688c17cabbaf">
+
+                <label for="address"><i class="fa-solid fa-map-marker-alt"></i> Address:</label>
+                <input type="text" id="address" name="address" required>
+
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message"><i class="fa-solid fa-comment"></i> Message:</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+
+                <button type="submit"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+        <section id="newsletter">
+            <div class="container">
+                <h1>Subscribe to Our Newsletter</h1>
+                <form action="https://web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="e63367f9-8001-46ea-8ef3-688c17cabbaf">
+                    <input type="email" placeholder="Enter Email..." name="email">
+                    <button type="submit" class="button_1">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <div class="overlay"></div>
+
+        <div class="auth-form" id="auth-form">
+            <h2>Login/Signup</h2>
+            <label for="auth-email">Email:</label>
+            <input type="email" id="auth-email" name="auth-email">
+            <label for="auth-password">Password:</label>
+            <input type="password" id="auth-password" name="auth-password">
+            <button id="auth-button">Submit</button>
+            <div class="auth-options">
+                <a href="#" id="forgot-password-link">Forgot Password?</a>
+                <a href="#" id="toggle-signup-link">Need an account? Signup</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Hack Masters, Copyright &copy; 2025</p>
+        </footer>
+
+        <script type="module">
+            import { signup, login } from './src/auth.js';
+            import { auth } from './src/firebaseConfig.js';
+
+            const authLink = document.getElementById('auth-link');
+            const authForm = document.getElementById('auth-form');
+            const overlay = document.querySelector('.overlay');
+            const authButton = document.getElementById('auth-button');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            const toggleSignupLink = document.getElementById('toggle-signup-link');
+            const dataBreachLink = document.getElementById('data-breach-link');
+            const secureMessageLink = document.getElementById('secure-message-link');
+            const optionsSection = document.getElementById('options-section');
+
+            let isSignup = false;
+
+            const showAuthForm = (e) => {
+                e.preventDefault();
+                authForm.style.display = 'block';
+                overlay.style.display = 'block';
+            };
+
+            const logout = async (e) => {
+                e.preventDefault();
+                try {
+                    await auth.signOut();
+                    alert('Logout successful!');
+                } catch (error) {
+                    console.error('Logout failed:', error.message);
+                    alert('Logout failed: ' + error.message);
+                }
+            };
+
+            // Function to update the UI based on authentication state
+            const updateUI = (user) => {
+                if (user) {
+                    // User is logged in
+                    optionsSection.style.display = 'block'; // Show the options section
+                    authLink.textContent = 'Logout';
+                    authLink.removeEventListener('click', showAuthForm);
+                    authLink.addEventListener('click', logout);
+                } else {
+                    // User is logged out
+                    optionsSection.style.display = 'none'; // Hide the options section
+                    authLink.textContent = 'Login';
+                    authLink.removeEventListener('click', logout);
+                    authLink.addEventListener('click', showAuthForm);
+                }
+            };
+
+            // Initial UI update
+            updateUI(auth.currentUser);
+
+            // Listen for authentication state changes
+            auth.onAuthStateChanged(updateUI);
+
+            authLink.addEventListener('click', (e) => { // Added event parameter
+                e.preventDefault(); // Prevent the default action
+                showAuthForm(e); // Pass the event object to showAuthForm
+            });
+
+            overlay.addEventListener('click', () => {
+                authForm.style.display = 'none';
+                overlay.style.display = 'none';
+            });
+
+            authButton.addEventListener('click', async () => {
+                const email = document.getElementById('auth-email').value;
+                const password = document.getElementById('auth-password').value;
+                try {
+                    let user;
+                    if (isSignup) {
+                        user = await signup(email, password);
+                        alert('Signup successful!');
+                    } else {
+                        user = await login(email, password);
+                        alert('Login successful!');
+                    }
+                    console.log('Authentication successful:', user);
+                    authForm.style.display = 'none';
+                    overlay.style.display = 'none';
+                } catch (error) {
+                    console.error('Authentication failed:');
+                    alert('Authentication failed ' );
+                }
+            });
+
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Forgot password functionality not implemented yet Contect Admin.');
+            });
+
+            toggleSignupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                isSignup = !isSignup;
+                if (isSignup) {
+                    authButton.textContent = 'Signup';
+                    toggleSignupLink.textContent = 'Already have an account? Login';
+                } else {
+                    authButton.textContent = 'Login';
+                    toggleSignupLink.textContent = 'Need an account? Signup';
+                }
+            });
+        </script>
+    </body>
+
+    </html>
+
+
+
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack Masters Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        #chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #1e88e5;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        #chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+        #chatbot-icon img {
+            width: 30px;
+            height: 30px;
+        }
+        #chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 450px;
+            background-color: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #chat-header {
+            background-color: #1e88e5;
+            color: #ffffff;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #close-chat {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        #chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #121212;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            max-width: 80%;
+            color: #ffffff;
+        }
+        .user-message {
+            background-color: #1e88e5;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #333333;
+            align-self: flex-start;
+        }
+        #chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #333333;
+            background-color: #1c1c1c;
+        }
+        #user-input {
+            flex-grow: 1;
+            border: none;
+            padding: 8px;
+            border-radius: 20px;
+            background-color: #333333;
+            color: #ffffff;
+            margin-right: 10px;
+        }
+        #send-button {
+            background-color: #1e88e5;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbot-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" alt="AI Icon">
+    </div>
+    <div id="chat-window">
+        <div id="chat-header">
+            <span>Hack Masters Chatbot</span>
+            <span id="close-chat">&times;</span>
+        </div>
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatbotIcon = document.getElementById('chatbot-icon');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChat = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        chatbotIcon.addEventListener('click', toggleChat);
+        closeChat.addEventListener('click', toggleChat);
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function toggleChat() {
+            chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage('user', message);
+                userInput.value = '';
+                setTimeout(() => {
+                    const response = generateResponse(message);
+                    addMessage('bot', response);
+                }, 500);
+            }
+        }
+
+        function addMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', `${sender}-message`);
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function generateResponse(input) {
+    const responses = {
+        "Hello": "Hi! How are you?",
+        "Cybersecurity": "Cyber threats are evolving. Stay secure with the latest measures!",
+        "Data Breach": "A data breach can expose sensitive information. Always use strong encryption!",
+        "AI": "Artificial Intelligence is transforming industries with automation and insights!",
+        "Machine Learning": "ML enables systems to learn from data and improve decision-making!",
+        "Blockchain": "Blockchain ensures decentralized security and transparency!",
+        "Ethereum": "Ethereum supports smart contracts for decentralized applications!",
+        "Threat Intelligence": "Threat intelligence helps in proactive cybersecurity defense!",
+        "Encryption": "Encryption safeguards data from unauthorized access!",
+        "Deep Learning": "Deep learning mimics the human brain for complex problem-solving!",
+        "Penetration Testing": "Pentesting helps identify security vulnerabilities before attackers do!",
+        "Zero Trust": "Zero Trust security assumes no entity is trustworthy by default!",
+        "Ransomware": "Ransomware encrypts files and demands payment for decryption!",
+        "Phishing": "Phishing attacks trick users into revealing sensitive information!",
+        "Smart Contracts": "Smart contracts automate processes securely on blockchain!",
+        "Web3": "Web3 enables decentralized applications and ownership of digital assets!",
+        "SOC": "A Security Operations Center monitors and mitigates cyber threats!",
+        "Forensics": "Digital forensics helps investigate cybercrimes and recover evidence!",
+        "Bug Bounty": "Bug bounty programs incentivize ethical hacking for security improvements!",
+        "Zero-Day": "Zero-day vulnerabilities are unknown exploits that hackers can use!",
+        "Threat Hunting": "Threat hunting involves actively searching for cyber threats!",
+        "AI Ethics": "AI ethics ensure fairness, accountability, and transparency in AI development!",
+        "Deepfake": "Deepfakes use AI to manipulate images and videos, posing security risks!",
+        "Quantum Computing": "Quantum computing has the potential to break traditional encryption!",
+        "DeFi": "Decentralized Finance (DeFi) revolutionizes financial systems with blockchain!",
+        "NFTs": "Non-Fungible Tokens (NFTs) represent unique digital assets on blockchain!",
+        "Metaverse": "The Metaverse integrates virtual worlds with blockchain and AI!",
+        "Cyber Warfare": "Cyber warfare involves state-sponsored hacking and cyber espionage!",
+        "Insider Threats": "Insider threats come from employees or trusted individuals within an organization!",
+        "IoT Security": "IoT devices must be secured to prevent vulnerabilities and attacks!",
+        "Dark Web": "The dark web hosts hidden services and is often associated with cybercrime!",
+        "Ethical Hacking": "Ethical hacking helps strengthen cybersecurity through authorized testing!",
+        "Cloud Security": "Cloud security protects data and applications hosted in the cloud!",
+        "AI Bias": "AI bias can lead to unfair outcomes and must be mitigated in development!",
+        "Federated Learning": "Federated learning enables ML models to train across decentralized data!",
+        "Homomorphic Encryption": "This encryption allows computations on encrypted data without decryption!",
+        "Hyperledger": "Hyperledger is a permissioned blockchain framework for enterprise use!",
+        "Zero-Knowledge Proofs": "ZKPs enable authentication without revealing underlying data!",
+        "Decentralized Identity": "Decentralized identity solutions empower users to control their data!",
+        "AI Security": "AI-driven cybersecurity helps detect and mitigate evolving threats!",
+        "Predictive Analytics": "Predictive analytics uses data to forecast future trends and risks!",
+        "Swarm Intelligence": "Swarm intelligence models AI behavior on collective decision-making!",
+        "Secure Multi-Party Computation": "SMPC allows computations on private data while preserving privacy!",
+        "AI Breach Detection": "AI-driven breach detection uses machine learning to identify threats in real time!",
+        "Blockchain Messaging": "Blockchain-based messaging ensures decentralized and encrypted communication!",
+        "IPFS": "InterPlanetary File System (IPFS) enables distributed and immutable file storage!",
+        "AI Anomaly Detection": "AI can detect network anomalies and unusual behaviors to prevent cyber attacks!",
+        "Consensus Mechanisms": "Blockchain consensus mechanisms like PoW and PoS ensure network integrity!",
+        "Smart Contract Auditing": "Auditing smart contracts is essential to prevent vulnerabilities and exploits!",
+        "Decentralized VPN": "A decentralized VPN ensures privacy by eliminating central control over data routing!",
+        "AI-driven SOC": "An AI-powered Security Operations Center (SOC) enhances threat detection and response!",
+        "Zero-Knowledge Messaging": "Messaging with zero-knowledge proofs ensures privacy without revealing metadata!",
+        "Hi":"Hello",
+        "hi":"Hello",
+        "AI":"Artificial Intellegence",
+        "ai":"Artificial Intellegence",
+        "hello":"How are you",
+        "Hello":"How are you",
+        "fine":"Check our service",
+        "Fine":"Check oru Service",
+        "Service":"Security Service"
+    };
+    
+    return responses[input] || "Contact admin.";
+}
+
+// Example usage
+console.log(generateResponse("Hello")); // Hi! How are you?
+console.log(generateResponse("Blockchain")); // Blockchain ensures decentralized security and transparency!
+console.log(generateResponse("Zero Trust")); // Zero Trust security assumes no entity is trustworthy by default!
+console.log(generateResponse("AI Security")); // AI-driven cybersecurity helps detect and mitigate evolving threats!
+console.log(generateResponse("AI Breach Detection")); // AI-driven breach detection uses machine learning to identify threats in real time!
+console.log(generateResponse("Blockchain Messaging")); // Blockchain-based messaging ensures decentralized and encrypted communication!
+console.log(generateResponse("UnknownKeyword")); // Contact admin.
+
+    </script>
+</body>
+</html>
